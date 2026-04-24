@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eid Mubarak</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: white;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .container {
+      padding: 30px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      max-width: 520px;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 42px;
+      margin-bottom: 20px;
+      color: #ffd700;
+      text-shadow: 0 0 10px #ffd700;
+    }
+
+    .credit {
+      font-size: 14px;
+      margin-bottom: 10px;
+      color: #ccc;
+      font-style: italic;
+    }
+
+    button {
+      padding: 12px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      background: #00c9a7;
+      color: white;
+      transition: 0.3s;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    button:hover {
+      background: #00a38a;
+    }
+
+    #message {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #ffd700;
+      text-align: left;
+      white-space: pre-line;
+      min-height: 100px;
+      position: relative;
+    }
+
+    .word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: transform 0.6s ease, opacity 0.5s;
+      margin-right: 3px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Eid Mubarak 🌙</h1>
+    <p>Click the button below to see your special wish</p>
+
+    <div class="credit">(Created by SM Shaifur)</div>
+
+    <button id="clickButton" onclick="showWish()">Click Here</button>
+
+    <div id="message"></div>
+
+    <audio id="bgMusic" src="https://image2url.com/r2/default/audio/1773932660298-15d708af-b0bb-4bee-ad65-27cb8b814ab7.mp3" loop></audio>
+  </div>
+
+  <script>
+    const messages = [
+      '🌙 Eid Mubarak! \nএই সুন্দর দিনে তোমার জীবন আনন্দ, শান্তি এবং সাফল্যে পরিপূর্ণ হোক',
+      'আল্লাহ তোমার দোয়াগুলো কবুল করুন এবং তোমাকে ও তোমার পরিবারকে সুস্থতা ও সমৃদ্ধিতে আশীর্বাদ করুন 🤲',
+      'তোমার প্রিয়জনদের সঙ্গে ঈদের প্রতিটি মুহূর্ত উপভোগ করো ❤️',
+      'সবসময় আনন্দিত ও বরকতময় থাকো!',
+      '✨ Eid Mubarak to you and your family✨'
+    ];
+
+    let clickCount = 0;
+
+    function showWish() {
+      const button = document.getElementById('clickButton');
+      const music = document.getElementById('bgMusic');
+      const container = document.getElementById('message');
+
+      if (clickCount === 0) {
+        music.play().catch(() => {});
+      }
+
+      if (clickCount < messages.length) {
+        container.innerHTML = '';
+
+        const words = messages[clickCount].split(' ');
+
+        words.forEach((word, i) => {
+          const span = document.createElement('span');
+          span.className = 'word';
+          span.innerText = word;
+
+          container.appendChild(span);
+
+          setTimeout(() => {
+            span.style.opacity = 1;
+            span.style.transform = 'translateY(0)';
+          }, i * 200);
+        });
+
+        clickCount++;
+
+        if (clickCount === messages.length) {
+          button.innerText = 'Back';
+        }
+
+      } else {
+        clickCount = 0;
+        container.innerHTML = '';
+        button.innerText = 'Click Here';
+        music.pause();
+        music.currentTime = 0;
+      }
+    }
+  </script>
+
+</body>
+</html>
