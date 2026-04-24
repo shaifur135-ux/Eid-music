@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Headshot Panel</title>
+
+<style>
+body {
+    background: black;
+    font-family: Arial;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.panel {
+    background: #111;
+    padding: 20px;
+    border-radius: 15px;
+    width: 300px;
+    box-shadow: 0 0 20px red;
+}
+
+h2 {
+    text-align: center;
+    color: red;
+}
+
+.option {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+}
+
+.switch {
+    width: 40px;
+    height: 20px;
+    background: gray;
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
+}
+
+.switch::before {
+    content: "";
+    width: 18px;
+    height: 18px;
+    background: white;
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.active {
+    background: red;
+}
+
+.active::before {
+    left: 21px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="panel">
+    <h2>🔥 Headshot Panel</h2>
+
+    <div class="option">
+        <span>Auto Headshot</span>
+        <div class="switch" onclick="toggle(this)"></div>
+    </div>
+
+    <div class="option">
+        <span>Aim Lock</span>
+        <div class="switch" onclick="toggle(this)"></div>
+    </div>
+
+    <div class="option">
+        <span>Head Only Damage</span>
+        <div class="switch" onclick="toggle(this)"></div>
+    </div>
+</div>
+
+<script>
+function toggle(el){
+    el.classList.toggle("active");
+}
+</script>
+
+</body>
+</html>
