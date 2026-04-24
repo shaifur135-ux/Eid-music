@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Munia Runner</title>
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial;
+            background: linear-gradient(to top, #87CEEB, #fff);
+        }
+
+        #score {
+            position: absolute;
+            top: 10px;
+            width: 100%;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        #subtitle {
+            position: absolute;
+            top: 45px;
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+            z-index: 10;
+        }
+
+        #game {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #road {
+            position: absolute;
+            bottom: 80px;
+            width: 100%;
+            height: 60px;
+            background: #444;
+        }
+
+        #player {
+            position: absolute;
+            bottom: 110px;
+            left: 60px;
+            text-align: center;
+        }
+
+        .girl {
+            font-size: 32px;
+        }
+
+        .boy {
+            position: absolute;
+            bottom: 110px;
+            font-size: 32px;
+        }
+
+        #tapBtn {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 18px;
+            font-size: 16px;
+            background: black;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="score">Score: 0</div>
+
+<div id="subtitle">
+    🎀 মুনিয়া 🌸 সবার ক্রাশ <br>
+    ছেলেদের থেকে বাঁচতে হলে দৌড়াও 🎀 মুনিয়া 🌸😁
+</div>
+
+<div id="game">
+    <div id="road"></div>
+
+    <div id="player">
+        <div>🎀 Munia 🌸</div>
+        <div class="girl">💃</div>
+    </div>
+</div>
+
+<button id="tapBtn">TAP</button>
+
+<script>
+    let player = document.getElementById("player");
+    let scoreText = document.getElementById("score");
+    let tapBtn = document.getElementById("tapBtn");
+
+    let score = 0;
+    let jumping = false;
+    let gameOver = false;
+
+    tapBtn.onclick = jump;
+
+    document.addEventListener("keydown", e => {
+        if (e.code === "Space") jump();
+    });
+
+    function jump() {
+        if (jumping || gameOver) return;
+        jumping = true;
+
+        let pos = 110;
+
+        let up = setInterval(() => {
+            if (pos >= 230) {
+                clearInterval(up);
+
+                let down = setInterval(() => {
+                    if (pos <= 110) {
+                        clearInterval(down);
+                        jumping = false;
+                    }
+                    pos -= 5;
+                    player.style.bottom = pos + "px";
+                }, 20);
+            }
+            pos += 6;
+            player.style.bottom = pos + "px";
+        }, 20);
+    }
+
+    function createBoy() {
+        if (gameOver) return;
+
+        let boy = document.createElement("div");
+        boy.className = "boy";
+        boy.innerHTML = "🕺";
+        document.getElementById("game").appendChild(boy);
+
+        let x = window.innerWidth;
+
+        let move = setInterval(() => {
+            if (gameOver) return;
+
+            let playerRect = player.getBoundingClientRect();
+            let boyRect = boy.getBoundingClientRect();
+
+            // ✅ FRONT ONLY COLLISION FIX
+            let playerCenter = playerRect.left + (playerRect.width / 2);
+            let boyCenter = boyRect.left + (boyRect.width / 2);
+
+            let distance = Math.abs(playerCenter - boyCenter);
+
+            if (
+                distance < 25 && // only front hit
+                boyRect.top < playerRect.bottom &&
+                boyRect.bottom > playerRect.top
+            ) {
+                gameOver = true;
+                alert("Game Over! Score: " + score);
+                location.reload();
+            }
+
+            if (x < -50) {
+                boy.remove();
+                clearInterval(move);
+                score++;
+                scoreText.innerText = "Score: " + score;
+            }
+
+            x -= 3;
+            boy.style.left = x + "px";
+        }, 20);
+
+        setTimeout(createBoy, 1800);
+    }
+
+    createBoy();
+</script>
+
+</body>
+</html>
